@@ -6,16 +6,16 @@ export const getServerSideUser = async (
   cookies: NextRequest['cookies'] | ReadonlyRequestCookies
 ) => {
   const token = cookies.get('payload-token')?.value
+  const url = `${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/me`;
 
   try {
-    const meRes = await fetch(
-      `${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/me`,
-      {
-        headers: {
-          Authorization: `JWT ${token}`,
-        },
-      }
-    )
+    console.log('Fetching user from URL:', url);  // Log the full URL
+
+    const meRes = await fetch(url, {
+      headers: {
+        Authorization: `JWT ${token}`,
+      },
+    });
 
     if (!meRes.ok) {
       throw new Error(`HTTP error! status: ${meRes.status}`);
@@ -23,9 +23,9 @@ export const getServerSideUser = async (
 
     const { user } = (await meRes.json()) as {
       user: User | null
-    }
+    };
 
-    return { user }
+    return { user };
   } catch (error) {
     console.error('Error fetching user:', error);
     return { user: null };
