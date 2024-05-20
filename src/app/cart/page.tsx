@@ -38,9 +38,9 @@ const Page = () => {
   const fee = 1
 
   return (
-    <div className='bg-white'>
+    <div className='bg-black'>
       <div className='mx-auto max-w-2xl px-4 pb-24 pt-16 sm:px-6 lg:max-w-7xl lg:px-8'>
-        <h1 className='text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl'>
+        <h1 className='text-3xl font-bold tracking-tight text-gray-200 sm:text-4xl'>
           Shopping Cart
         </h1>
 
@@ -113,7 +113,7 @@ const Page = () => {
                               <h3 className='text-sm'>
                                 <Link
                                   href={`/product/${product.id}`}
-                                  className='font-medium text-gray-700 hover:text-gray-800'>
+                                  className='font-medium text-gray-300 hover:text-gray-500'>
                                   {product.name}
                                 </Link>
                               </h3>
@@ -125,7 +125,7 @@ const Page = () => {
                               </p>
                             </div>
 
-                            <p className='mt-1 text-sm font-medium text-gray-900'>
+                            <p className='mt-1 text-sm font-medium text-gray-200'>
                               {formatPrice(product.price)}
                             </p>
                           </div>
@@ -151,7 +151,7 @@ const Page = () => {
                           <Check className='h-5 w-5 flex-shrink-0 text-green-500' />
 
                           <span>
-                            Eligible for instant delivery
+                            Eligible for instant download
                           </span>
                         </p>
                       </div>
@@ -161,17 +161,17 @@ const Page = () => {
             </ul>
           </div>
 
-          <section className='mt-16 rounded-lg bg-gray-50 px-4 py-6 sm:p-6 lg:col-span-5 lg:mt-0 lg:p-8'>
-            <h2 className='text-lg font-medium text-gray-900'>
+          <section className='mt-16 rounded-lg bg-slate-900 px-4 py-6 sm:p-6 lg:col-span-5 lg:mt-0 lg:p-8'>
+            <h2 className='text-lg font-medium text-gray-200'>
               Order summary
             </h2>
 
             <div className='mt-6 space-y-4'>
               <div className='flex items-center justify-between'>
-                <p className='text-sm text-gray-600'>
+                <p className='text-sm text-gray-300'>
                   Subtotal
                 </p>
-                <p className='text-sm font-medium text-gray-900'>
+                <p className='text-sm font-medium text-gray-300'>
                   {isMounted ? (
                     formatPrice(cartTotal)
                   ) : (
@@ -181,10 +181,10 @@ const Page = () => {
               </div>
 
               <div className='flex items-center justify-between border-t border-gray-200 pt-4'>
-                <div className='flex items-center text-sm text-muted-foreground'>
+                <div className='flex items-center text-sm text-muted-foreground text-white'>
                   <span>Flat Transaction Fee</span>
                 </div>
-                <div className='text-sm font-medium text-gray-900'>
+                <div className='text-sm font-medium text-gray-200'>
                   {isMounted ? (
                     formatPrice(fee)
                   ) : (
