@@ -34,15 +34,15 @@ export const EmailTemplate = ({
       <Body style={main}>
         <Container style={container}>
           <Img
-            src={`${process.env.NEXT_PUBLIC_SERVER_URL}/hippo-newsletter-sign-up.png`}
+            src={`${process.env.NEXT_PUBLIC_SERVER_URL}/thumbnail.png`}
             width='150'
             height='150'
-            alt='DigitalHippo'
+            alt='Codeverse'
             style={logo}
           />
           <Text style={paragraph}>Hi there,</Text>
           <Text style={paragraph}>
-            Welcome to DigitalHippo, the marketplace for
+            Welcome to Codeverse marketplace, the marketplace for
             high quality digital goods. Use the button below
             to {actionLabel}.
           </Text>
@@ -54,7 +54,7 @@ export const EmailTemplate = ({
           <Text style={paragraph}>
             Best,
             <br />
-            The DigitalHippo team
+            The Codeverse team
           </Text>
           <Hr style={hr} />
           <Text style={footer}>
@@ -97,7 +97,7 @@ const btnContainer = {
 
 const button = {
   padding: '12px 12px',
-  backgroundColor: '#2563eb',
+  backgroundColor: '#A670E1',
   borderRadius: '3px',
   color: '#fff',
   fontSize: '16px',

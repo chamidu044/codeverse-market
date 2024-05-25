@@ -103,16 +103,16 @@ const Page = () => {
             </Link>
           </div>
 
-          <div className='grid gap-6 text-white'>
+          <div className='grid gap-6 text-black'>
             <form onSubmit={handleSubmit(onSubmit)}>
               <div className='grid gap-2'>
                 <div className='grid gap-1 py-2'>
-                  <Label htmlFor='email'>Email</Label>
+                  <Label htmlFor='email'className='text-white'>Email</Label>
                   <Input
                     {...register('email')}
-                    className={cn({
-                      'focus-visible:ring-red-500':
-                        errors.email,
+                    className= {cn({
+                      'focus-visible:ring-red-500' :
+                        errors.email, 
                     })}
                     placeholder='you@example.com'
                   />
@@ -123,8 +123,8 @@ const Page = () => {
                   )}
                 </div>
 
-                <div className='grid gap-1 py-2 text-white'>
-                  <Label htmlFor='password'>Password</Label>
+                <div className='grid gap-1 py-2 text-black'>
+                  <Label htmlFor='password' className='text-white'>Password</Label>
                   <Input
                     {...register('password')}
                     type='password'

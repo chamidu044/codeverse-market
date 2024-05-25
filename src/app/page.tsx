@@ -24,11 +24,11 @@ export default function Home() {
       <MaxWidthWrapper>
         <div className='py-20 mx-auto text-center flex flex-col items-center max-w-3xl relative z-10'>
           <h1 className='text-4xl font-bold tracking-tight text-gray-200 sm:text-6xl'>
-            Your marketplace for high-quality{' '}
+          One stop marketplace for <br/>{' '}
             <span className='text-gradient'>
-              digital assets
+            all your digital assets
             </span>
-            .
+             {' '}!
           </h1>
           <p className='mt-6 text-lg max-w-prose text-muted-foreground'>
             Welcome to Codeverse Marketplace. Every asset on our

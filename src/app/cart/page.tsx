@@ -210,9 +210,11 @@ const Page = () => {
             <div className='mt-6'>
               <Button
                 disabled={items.length === 0 || isLoading}
-                onClick={() =>
-                  createCheckoutSession({ productIds })
-                }
+                onClick={() => {
+                  console.log("Checkout button clicked");
+                  console.log("Product IDs:", productIds);
+                  createCheckoutSession({ productIds });
+                }}
                 className='w-full'
                 size='lg'>
                 {isLoading ? (

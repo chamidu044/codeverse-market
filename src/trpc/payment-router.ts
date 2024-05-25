@@ -11,15 +11,19 @@ import type Stripe from 'stripe'
 
 export const paymentRouter = router({
   createSession: privateProcedure
-    .input(z.object({ productIds: z.array(z.string()) }))
-    .mutation(async ({ ctx, input }) => {
-      const { user } = ctx
-      let { productIds } = input
+  .input(z.object({ productIds: z.array(z.string()) }))
+  .mutation(async ({ ctx, input }) => {
+    const { user } = ctx
+    let { productIds } = input
 
-      if (productIds.length === 0) {
-        throw new TRPCError({ code: 'BAD_REQUEST' })
-      }
+    console.log("Creating session for user:", user.id);
+    console.log("Product IDs:", productIds);
 
+    if (productIds.length === 0) {
+      throw new TRPCError({ code: 'BAD_REQUEST' })
+    }
+
+    try {
       const payload = await getPayloadClient()
 
       const { docs: products } = await payload.find({
@@ -44,8 +48,7 @@ export const paymentRouter = router({
         },
       })
 
-      const line_items: Stripe.Checkout.SessionCreateParams.LineItem[] =
-        []
+      const line_items: Stripe.Checkout.SessionCreateParams.LineItem[] = []
 
       filteredProducts.forEach((product) => {
         line_items.push({
@@ -55,32 +58,34 @@ export const paymentRouter = router({
       })
 
       line_items.push({
-        price: 'price_1PHTrTJr3IP0v6Vf32KKbkhY',
+        price: 'price_1PKDDHJr3IP0v6VfdqsjHMxz',
         quantity: 1,
         adjustable_quantity: {
           enabled: false,
         },
       })
 
-      try {
-        const stripeSession =
-          await stripe.checkout.sessions.create({
-            success_url: `${process.env.NEXT_PUBLIC_SERVER_URL}/thank-you?orderId=${order.id}`,
-            cancel_url: `${process.env.NEXT_PUBLIC_SERVER_URL}/cart`,
-            payment_method_types: ['card', 'paypal'],
-            mode: 'payment',
-            metadata: {
-              userId: user.id,
-              orderId: order.id,
-            },
-            line_items,
-          })
+      const stripeSession = await stripe.checkout.sessions.create({
+        success_url: `${process.env.NEXT_PUBLIC_SERVER_URL}/thank-you?orderId=${order.id}`,
+        cancel_url: `${process.env.NEXT_PUBLIC_SERVER_URL}/cart`,
+        payment_method_types: ['card', 'paypal'],
+        mode: 'payment',
+        metadata: {
+          userId: user.id,
+          orderId: order.id,
+        },
+        line_items,
+      })
 
-        return { url: stripeSession.url }
-      } catch (err) {
-        return { url: null }
-      }
-    }),
+      console.log("Stripe session created:", stripeSession);
+
+      return { url: stripeSession.url }
+    } catch (err) {
+      console.error("Error creating stripe session:", err);
+      return { url: null }
+    }
+  }),
+
   pollOrderStatus: privateProcedure
     .input(z.object({ orderId: z.string() }))
     .query(async ({ input }) => {
