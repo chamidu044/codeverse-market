@@ -33,39 +33,28 @@ export type WebhookRequest = IncomingMessage & {
 
 const start = async () => {
   // Set up webhook middleware
-  const webhookMiddleware = bodyParser.raw({ type: 'application/json' })
+  const webhookMiddleware = bodyParser.raw({ type: 'application/json' });
+  app.post('/api/webhooks/stripe', webhookMiddleware, stripeWebhookHandler);
 
-  app.post('/api/webhooks/stripe', webhookMiddleware, stripeWebhookHandler)
+  console.log("Stripe webhook route registered");
 
   // Initialize Payload CMS
   const payload = await getPayloadClient({
     initOptions: {
       express: app,
       onInit: async (cms) => {
-        cms.logger.info(`Admin URL: ${cms.getAdminURL()}`)
+        cms.logger.info(`Admin URL: ${cms.getAdminURL()}`);
       },
     },
-  })
+  });
 
   if (process.env.NEXT_BUILD) {
     app.listen(PORT, async () => {
-      payload.logger.info('Next.js is building for production')
-      // Provide required arguments to nextBuild
-      await nextBuild(
-        path.join(__dirname, '../'), // dir
-        false,                      // reactProductionProfiling
-        false,                      // debugOutput
-        true,                       // runLint
-        false,                      // noMangling
-        false,                      // appDirOnly
-        false,                      // turboNextBuild
-        null,                       // turboNextBuildRoot
-        'default',                  // buildMode
-                               // turboNextBuildVerbose
-      )
-      process.exit()
-    })
-    return
+      payload.logger.info('Next.js is building for production');
+      await nextBuild(path.join(__dirname, '../'), false, false, true, false, false, false, null, 'default');
+      process.exit();
+    });
+    return;
   }
 
   // Route for cart with authentication
@@ -85,16 +74,13 @@ const start = async () => {
     createContext,
   }))
 
-  // Default handler for Next.js
-  app.use((req, res) => nextHandler(req, res))
-
-  // Prepare and start Next.js app
+  app.use((req, res) => nextHandler(req, res));
   nextApp.prepare().then(() => {
-    payload.logger.info('Next.js started')
+    payload.logger.info('Next.js started');
     app.listen(PORT, () => {
-      payload.logger.info(`Next.js App URL: ${process.env.NEXT_PUBLIC_SERVER_URL}`)
-    })
-  })
-}
+      payload.logger.info(`Next.js App URL: ${process.env.NEXT_PUBLIC_SERVER_URL}`);
+    });
+  });
+};
 
-start()
+start();
