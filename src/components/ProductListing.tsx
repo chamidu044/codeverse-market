@@ -1,10 +1,7 @@
-'use client'
-
-import Image from 'next/image'
-import Link from 'next/link'
 import { Product } from '@/payload-types'
 import { useEffect, useState } from 'react'
 import { Skeleton } from './ui/skeleton'
+import Link from 'next/link'
 import { cn, formatPrice } from '@/lib/utils'
 import { PRODUCT_CATEGORIES } from '@/config'
 import ImageSlider from './ImageSlider'
@@ -50,16 +47,16 @@ const ProductListing = ({
           }
         )}
         href={`/product/${product.id}`}>
-        <div className='flex flex-col w-full '>
-          <ImageSlider urls={validUrls.map(url => `${process.env.NEXT_PUBLIC_BASE_URL}${url}`)} />
+        <div className='flex flex-col w-full'>
+          <ImageSlider urls={validUrls} />
 
-          <h3 className='mt-4 font-medium text-sm text-gray-300'>
+          <h3 className='mt-4 font-medium text-sm text-gray-700'>
             {product.name}
           </h3>
-          <p className='mt-1 text-sm text-gray-200'>
+          <p className='mt-1 text-sm text-gray-500'>
             {label}
           </p>
-          <p className='mt-1 font-medium text-sm text-gray-500'>
+          <p className='mt-1 font-medium text-sm text-gray-900'>
             {formatPrice(product.price)}
           </p>
         </div>
@@ -71,7 +68,7 @@ const ProductListing = ({
 const ProductPlaceholder = () => {
   return (
     <div className='flex flex-col w-full'>
-      <div className='relative bg-gray-800 aspect-square w-full overflow-hidden rounded-xl'>
+      <div className='relative bg-zinc-100 aspect-square w-full overflow-hidden rounded-xl'>
         <Skeleton className='h-full w-full' />
       </div>
       <Skeleton className='mt-4 w-2/3 h-4 rounded-lg' />
