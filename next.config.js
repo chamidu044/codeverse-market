@@ -10,6 +10,10 @@ const nextConfig = {
 				protocol: "https",
 				hostname: "king-prawn-app-nwcmm.ondigitalocean.app",
 			},
+			{
+				protocol: "https",
+				hostname: "king-prawn-app-nwcmm.ondigitalocean.app",
+			}
 		],
 	},
 };
