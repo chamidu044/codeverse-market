@@ -56,7 +56,7 @@ export function constructMetadata({
       title,
       description,
       images: [image],
-      creator: '@joshtriedcoding',
+      creator: '@codeverse',
     },
     icons,
     metadataBase: new URL('https://king-prawn-app-nwcmm.ondigitalocean.app/'),
