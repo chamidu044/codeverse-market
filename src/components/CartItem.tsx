@@ -1,13 +1,12 @@
-import { PRODUCT_CATEGORIES } from '@/config'
+import Image from 'next/image'
+import { Product } from '@/payload-types'
 import { useCart } from '@/hooks/use-cart'
 import { formatPrice } from '@/lib/utils'
-import { Product } from '@/payload-types'
 import { ImageIcon, X } from 'lucide-react'
-import Image from 'next/image'
+import { PRODUCT_CATEGORIES } from '@/config'
 
 const CartItem = ({ product }: { product: Product }) => {
   const { image } = product.images[0]
-  console.log("img",product.images[0])
   const { removeItem } = useCart()
 
   const label = PRODUCT_CATEGORIES.find(
@@ -25,6 +24,8 @@ const CartItem = ({ product }: { product: Product }) => {
                 alt={product.name}
                 fill
                 className='absolute object-cover'
+                loader={({ src }) => src} // Add a loader function if needed
+                unoptimized={process.env.NODE_ENV === 'development'} // For localhost testing
               />
             ) : (
               <div className='flex h-full items-center justify-center bg-secondary'>

@@ -28,7 +28,7 @@ const VerifyEmailPage = ({ searchParams }: PageProps) => {
               />
             </div>
 
-            <h3 className='font-semibold text-2xl'>
+            <h3 className='font-semibold text-2xl text-white'>
               Check your email
             </h3>
 

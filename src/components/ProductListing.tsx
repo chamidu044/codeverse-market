@@ -1,9 +1,10 @@
 'use client'
 
+import Image from 'next/image'
+import Link from 'next/link'
 import { Product } from '@/payload-types'
 import { useEffect, useState } from 'react'
 import { Skeleton } from './ui/skeleton'
-import Link from 'next/link'
 import { cn, formatPrice } from '@/lib/utils'
 import { PRODUCT_CATEGORIES } from '@/config'
 import ImageSlider from './ImageSlider'
@@ -50,7 +51,7 @@ const ProductListing = ({
         )}
         href={`/product/${product.id}`}>
         <div className='flex flex-col w-full '>
-          <ImageSlider urls={validUrls} />
+          <ImageSlider urls={validUrls.map(url => `${process.env.NEXT_PUBLIC_BASE_URL}${url}`)} />
 
           <h3 className='mt-4 font-medium text-sm text-gray-300'>
             {product.name}
