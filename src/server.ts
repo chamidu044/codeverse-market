@@ -32,55 +32,78 @@ export type WebhookRequest = IncomingMessage & {
 }
 
 const start = async () => {
-  // Set up webhook middleware
-  const webhookMiddleware = bodyParser.raw({ type: 'application/json' });
-  app.post('/api/webhooks/stripe', webhookMiddleware, stripeWebhookHandler);
+  const webhookMiddleware = bodyParser.json({
+    verify: (req: WebhookRequest, _, buffer) => {
+      req.rawBody = buffer
+    },
+  })
 
-  console.log("Stripe webhook route registered");
+  app.post(
+    '/api/webhooks/stripe',
+    webhookMiddleware,
+    stripeWebhookHandler
+  )
 
-  // Initialize Payload CMS
   const payload = await getPayloadClient({
     initOptions: {
       express: app,
       onInit: async (cms) => {
-        cms.logger.info(`Admin URL: ${cms.getAdminURL()}`);
+        cms.logger.info(`Admin URL: ${cms.getAdminURL()}`)
       },
     },
-  });
+  })
 
   if (process.env.NEXT_BUILD) {
     app.listen(PORT, async () => {
-      payload.logger.info('Next.js is building for production');
-      await nextBuild(path.join(__dirname, '../'), false, false, true, false, false, false, null, 'default');
-      process.exit();
-    });
-    return;
+      payload.logger.info(
+        'Next.js is building for production'
+      )
+
+      // @ts-expect-error
+      await nextBuild(path.join(__dirname, '../'))
+
+      process.exit()
+    })
+
+    return
   }
 
-  // Route for cart with authentication
   const cartRouter = express.Router()
+
   cartRouter.use(payload.authenticate)
+
   cartRouter.get('/', (req, res) => {
     const request = req as PayloadRequest
-    if (!request.user) return res.redirect('/sign-in?origin=cart')
+
+    if (!request.user)
+      return res.redirect('/sign-in?origin=cart')
+
     const parsedUrl = parse(req.url, true)
     const { query } = parsedUrl
+
     return nextApp.render(req, res, '/cart', query)
   })
 
   app.use('/cart', cartRouter)
-  app.use('/api/trpc', trpcExpress.createExpressMiddleware({
-    router: appRouter,
-    createContext,
-  }))
+  app.use(
+    '/api/trpc',
+    trpcExpress.createExpressMiddleware({
+      router: appRouter,
+      createContext,
+    })
+  )
 
-  app.use((req, res) => nextHandler(req, res));
+  app.use((req, res) => nextHandler(req, res))
+
   nextApp.prepare().then(() => {
-    payload.logger.info('Next.js started');
-    app.listen(PORT, () => {
-      payload.logger.info(`Next.js App URL: ${process.env.NEXT_PUBLIC_SERVER_URL}`);
-    });
-  });
-};
+    payload.logger.info('Next.js started')
 
-start();
+    app.listen(PORT, async () => {
+      payload.logger.info(
+        `Next.js App URL: ${process.env.NEXT_PUBLIC_SERVER_URL}`
+      )
+    })
+  })
+}
+
+start()
